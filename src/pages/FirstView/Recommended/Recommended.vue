@@ -143,11 +143,32 @@
 							<img src="" alt="" class='prodPic'>
 							<div class="desc">【UV紫外线杀菌】水质净化加湿器 5L大容量</div>
 							<div class="price">¥137</div>
-							<div class="tagWrap">
+							<div class="tagWrap" v-if="index%2===0">
 								<span class="tag">满88顺丰包邮</span>
 							</div>
-							
 						</div>
+					</div>
+				</div>
+				<div class="otherModule">
+					<div class="part" v-for="index in 4" :key="index">
+						<div class="title">断货补单王</div>
+						<div class="desc">紧急补仓疯抢中</div>
+						<div class="prods">
+							<img src="" alt="" class="one">
+							<img src="" alt="" class="two">
+						</div>
+					</div>
+				</div>
+				<div class="footer">
+					<div class="center">
+						<div class="download">
+							<div class="btn app"><span>下载APP</span></div>
+							<div class="btn pc"><span>电脑版</span></div>
+						</div>
+						<p class="copyright">
+	网易公司版权所有 © 1997-2020<br>
+	食品经营许可证：JY13301080111719
+						</p>
 					</div>
 				</div>
     </div>
@@ -444,6 +465,58 @@ export default {};
 						color #DD1A21
 						border 1.2px solid #DD1A21
 						border-radius 5px
+	.otherModule
+		display flex
+		flex-wrap wrap
+		justify-content space-between
+		width 690px
+		background-color #fff
+		padding 15px 30px 30px
+		margin 20px 0
+		.part
+			width 310px
+			height 264px
+			padding 15px 15px 0 15px
+			background-color #F5F5F5
+			margin-bottom 5px
+			.title
+				line-height 44px
+				font-size 34px
+			.desc
+				color #7f7f7f
+			.prods
+				margin-top 4px
+				display flex
+				justify-content space-between
+				img
+					width 150px
+					height 150px
+					background-color aqua
+	.footer
+		height 260px
+		background-color #414141
+		border-top 1px solid rgba(0,0,0,.15)
+		text-align center
+		.center
+			width 450px
+			margin 0 auto
+			.download
+				padding-top 50px
+				height 70px
+				display flex
+				justify-content space-between
+				.btn
+					span
+						display inline-block
+						width 172px
+						height 62px
+						border-radius 4px
+						line-height 62px
+						border 1.8px solid #999
+						color #fff
+			.copyright
+				line-height 40px
+				color #999	
 
 
 
