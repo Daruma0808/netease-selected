@@ -1,9 +1,12 @@
 //路由懒加载
+//一级
 const FirstView = () => import('../pages/FirstView/FirstView');
 const Category = () => import('../pages/Category/Category');
 const Buying = () => import('../pages/Buying/Buying');
 const ShopCart = ()=> import('../pages/ShopCart/ShopCart');
 const Personal = () => import('../pages/Personal/Personal');
+//二级
+const Recommended = ()=> import('../pages/FirstView/Recommended/Recommended');
 
 
 export default [
@@ -13,7 +16,13 @@ export default [
     // }
     {
       path: '/firstView',
-      component: FirstView
+      component: FirstView,
+      children:[
+          {
+              path: 'recommended',
+              component: Recommended
+          }
+      ]
     },{
         path:'/category',
         component:Category
@@ -28,5 +37,5 @@ export default [
         component:Personal
     },{
        path:'/',
-       redirect: '/firstView' 
+       redirect: '/firstView/recommended' 
     }]
