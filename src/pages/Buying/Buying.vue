@@ -21,19 +21,26 @@
           <van-swipe-item>3</van-swipe-item>
         </van-swipe>
       </div>
+      <div class="waterfull">
+        <vue-waterfall-easy :imgsArr="imgsArr" @scrollReachBottom="getData"></vue-waterfall-easy>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import vueWaterfallEasy from 'vue-waterfall-easy'
 import Header from '../../components/header/header'
   export default {
     components:{
+      vueWaterfallEasy,
       Header
     },
     data(){
       return {
         current:0,
+        imgsArr:[],
+        group:0
       }
     },
     methods:{
