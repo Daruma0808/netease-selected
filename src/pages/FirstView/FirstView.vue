@@ -97,10 +97,15 @@ export default {
                 background-size cover
                 background-image url(http://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/indexLogo-a90bdaae6b.png?imageView&type=webp)
             .search
-                width 442px
+                width 400px
                 height 56px
                 margin 0 15px
                 line-height 56px
+                padding-left 80px
+                background-size 28px
+                background-image url('http://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-553dba3aff.png?imageView&type=webp')
+                background-repeat no-repeat
+                background-position 40px 10px
                 color #666
                 background-color #ededed
             .login

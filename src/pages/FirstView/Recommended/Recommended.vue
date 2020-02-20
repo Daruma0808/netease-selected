@@ -175,10 +175,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-import { Swipe, SwipeItem } from "vant";
-Vue.use(Swipe);
-Vue.use(SwipeItem);
 export default {};
 </script>
 
@@ -395,8 +391,6 @@ export default {};
 					margin 0 8px
 				em
 					font-style normal
-			.more
-				font-size 26px
 		.prod-list
 			display flex
 			justify-content space-between
@@ -515,21 +509,7 @@ export default {};
 						border 1.8px solid #999
 						color #fff
 			.copyright
-				line-height 40px
-				color #999	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+				line-height 38px
+				color #999
 
 </style>
