@@ -3,39 +3,35 @@
         <div class="fixed-header">
             <div class="top">
                 <div class="logo"></div>
-                <div class="search">
+                <div class="search" @click="toSearch">
                     <span class="icon"></span>
                     <span>搜索商品, 共20266款好物</span>
                 </div>
                 <div class="login">登录</div>
             </div>
             <div class="bot">
-                <van-tabs class="tab-bar" v-model="active" swipeable>
+                <van-tabs class="tab-bar" v-if="pageData.indexCateModule" v-model="active" @click="selTag" swipeable>
                     <van-tab
-                        v-for="index in 7"
-                        :title="'选项 ' + index"
+                        v-for="(item,index) in pageData.indexCateModule"
+                        :title="item.name"
                         :key="index"
-                    >
-                        
+                    > 
                     </van-tab>
                 </van-tabs>
                 <div class="all">
-                    <div class="modalCtrl" @click="modalCtrl">
-                        <van-collapse v-model="activeNames">
-                            <van-collapse-item name="1">
-                                <div>
-                                    <h3>全部频道</h3>
-                                </div>
-                            </van-collapse-item>
-                        </van-collapse>
-                    </div>
-                    <van-overlay :show="modalShow" @click.stop="hidModal">
-                        <div class="wrapper" @click.stop></div>
-                    </van-overlay>
+                    <van-cell is-link :arrow-direction="direction" @click="ctrlPopup"></van-cell>                   
                 </div>
+                <van-popup v-model="modalShow" @close="modalHide" position="top">
+                    <div class="collapse-block">
+                        <div class="name">全部频道</div>
+                        <div class="tags" v-if="pageData.indexCateModule">
+                            <div class="tagname" :class="{'active':index===active}" @click="selTag(index)" v-for="(item,index) in pageData.indexCateModule" :key="index">{{item.name}}</div>
+                        </div>
+                    </div>
+                </van-popup>
             </div>
         </div>
-        <router-view class="subView"></router-view>
+        <router-view class="subView" :pageData="123"></router-view>
     </div>
 </template>
 
@@ -44,34 +40,61 @@ import Vue from "vue";
 import {
     Tab,
     Tabs,
-    Collapse,
-    CollapseItem,
-    Overlay
+    Cell,
+    Popup 
 } from "vant";
+
 Vue.use(Tab);
 Vue.use(Tabs);
-Vue.use(Collapse);
-Vue.use(CollapseItem);
-Vue.use(Overlay);
+Vue.use(Cell);
+Vue.use(Popup);
+
 
 export default {
     data() {
         return {
             active: 0,
-            activeNames: [],
+            pageData:{},
+            direction: 'down',
             modalShow: false
         };
     },
     methods: {
-        modalCtrl() {
-            this.modalShow = !this.modalShow;
-            this.activeNames = this.modalShow ? ["1"] : [];
+        async getDatas(){
+			let datas = await this.$API.getRecommendData();
+			const {code,data} = datas;
+			if(code===0){
+				this.pageData = data
+			}
         },
-        hidModal() {
-            this.modalShow = false;
-            this.activeNames = [];
+        toSearch(){
+            this.$router.push('/wysearch');
+        },
+        ctrlPopup() {
+            this.modalShow = !this.modalShow;
+            this.direction = this.modalShow?'up':'down'
+        },
+        modalHide(){
+            this.direction = 'down'
+        },
+        selTag(i){
+            
+            //if(this.active === i) return
+            this.active = i;       
+            if(this.modalShow){
+                this.ctrlPopup();
+            }
+            if(i===0){
+                this.$route.path !== '/firstView/recommended' && this.$router.push('/firstView/recommended')
+            }else{
+                this.$route.path !== '/firstView/lifeHome' && this.$router.push('/firstView/lifeHome')
+            }
+            
         }
-    }
+    },
+    mounted(){
+		this.getDatas();
+	}
 };
 </script>
 
@@ -83,7 +106,7 @@ export default {
         width 100%
         position fixed
         top 0
-        z-index 10
+        z-index 3000
         .top
             background-color #fff
             display flex
@@ -121,27 +144,53 @@ export default {
             .van-tabs
                 >div
                     height 60px
+                .van-hairline--top-bottom
+                    &:after
+                        border none
                     .van-tab
                         line-height 60px
+                        text-align center
                         font-size 26px
             .all
                 position absolute
                 top 0
                 right 0
                 width 80px
-                height 60px
-                z-index 3
-                .modalCtrl
-                    height 100%
-                    z-index 9
-                    >div
-                        height 100%
-                        .van-collapse-item
-                            height 100%
-                .van-overlay
+                height 64px
+                z-index 9999
+                .van-cell
+                    margin-top 8px
+                    .van-cell__right-icon
+                        font-size 36px
+            .van-overlay
                     top auto
                     bottom 0
-                    height 70%
+                    height calc(100vh - 88px)
+            .van-popup--top
+                top 88px
+                .collapse-block
+                    padding 10px 20px 20px
+                    border-top 1px solid #eee
+                    .name
+                        margin-bottom 30px
+                        font-size 26px
+                    .tags
+                        display flex
+                        flex-wrap wrap
+                        justify-content space-between
+                        .tagname
+                            border 2px solid #ccc
+                            background-color #FAFAFA
+                            border-radius 3px
+                            width 160px
+                            text-align center
+                            height 60px
+                            margin-bottom 18px
+                            line-height 60px
+                            color #333
+                            &.active
+                                border-color #DD1A21
+                                color #DD1A21
     .subView
         margin-top 148px                
 

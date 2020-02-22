@@ -5,14 +5,17 @@
         <van-icon name="wap-home-o" size="26" color="#666"/>
       </router-link>
     </div>
-    <div class="mid">{{title}}</div>
+    <div class="mid">
+			<span v-if="title">{{title}}</span>
+			<slot name="mid"></slot>
+		</div>
     <div class="right">
-			<router-link to="/search">
-				<van-icon class="search" name="search" size="26" color="#666"/>
-			</router-link>
-			<router-link to="/shopCart">
-				<van-icon name="shopping-cart-o" size="26" color="#666"/>
-			</router-link>
+		<router-link to="/wysearch">
+			<van-icon class="search" name="search" size="26" color="#666"/>
+		</router-link>
+		<router-link to="/shopCart">
+			<van-icon name="shopping-cart-o" size="26" color="#666"/>
+		</router-link>
 		</div>
   </div>
 </template>
@@ -31,8 +34,9 @@ export default {
 	#header
 		background-color #fafafa
 		padding 0 20px
-		line-height 98px
-		height 98px
+		line-height 90px
+		height 90px
+		border-bottom 1px solid #ddd
 		display flex
 		justify-content space-between
 		.left

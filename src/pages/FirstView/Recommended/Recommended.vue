@@ -5,59 +5,49 @@
                 class="my-swipe"
                 :autoplay="3000"
                 indicator-color="white"
+				v-if="pageData.focusList"
             >
-                <van-swipe-item v-for="index in 4" :key="index">
+                <van-swipe-item v-for="(banner,index) in pageData.focusList" :key="index">
                     <img
-                        src="https://yanxuan.nosdn.127.net/6b1ebd19470cea9a7b8e81a52485f414.jpg?type=webp&imageView&quality=75&thumbnail=750x0"
-                        alt
+                        :src="banner.picUrl"
                     />
                 </van-swipe-item>
             </van-swipe>
         </div>
         <div class="servicePolicy">
-            <div class="item">
-                <span class="icon yi"></span>
-                <span>网易自营品牌</span>
-            </div>
-            <div class="item">
-                <span class="icon right"></span>
-                <span>30天无忧退货</span>
-            </div>
-            <div class="item">
-                <span class="icon yuan"></span>
-                <span>48小时快速退款</span>
+            <div class="item" v-for="(serve,index) in pageData.policyDescList" :key="index">
+                <img class="icon" :src="serve.icon"/>
+                <span>{{serve.desc}}</span>
             </div>
         </div>
-        <div class="categories">
-            <div class="item" v-for="index in 10" :key="index">
+        <div class="categories" v-if="pageData.kingKongModule && pageData.kingKongModule.kingKongList">
+            <div class="item" v-for="(item,index) in pageData.kingKongModule.kingKongList" :key="index">
                 <img
-                    src="http://yanxuan.nosdn.127.net/12e8efd15b9b210ab156a7ee9b340548.gif"
-                    alt
+                    :src="item.picUrl"
                 />
-                <p class="title">新品首发</p>
+                <p class="title">{{item.text}}</p>
             </div>
         </div>
         <div class="promotionModule">
             <div class="top">
                 <img
                     src="https://yanxuan.nosdn.127.net/5db28c137605ea7576c986e9c285e1c6.png?quality=75&type=webp&imageView&thumbnail=750x0"
-                    alt
                 />
             </div>
-            <div class="first">
-                <img
-                    src="https://yanxuan.nosdn.127.net/5db28c137605ea7576c986e9c285e1c6.png?quality=75&type=webp&imageView&thumbnail=750x0"
-                    alt
-                />
-            </div>
-            <div class="part">
-                <div class="item" v-for="index in 4" :key="index">
-                    <img
-                        src="https://yanxuan.nosdn.127.net/28244c6ae7ef78424ea5317a0d72dd6a.png?quality=75&type=webp&imageView&thumbnail=375x0"
-                        alt
-                    />
-                </div>
-            </div>
+			<div class="floor">
+				<div class="first">
+					<img
+						src="https://yanxuan.nosdn.127.net/a4187bffa2a0431ec5d6e2dd1070d6c5.gif?imageView&quality=75"
+					/>
+				</div>
+				<div class="part">
+					<div class="item" v-for="index in 4" :key="index">
+						<img
+							src="https://yanxuan.nosdn.127.net/28244c6ae7ef78424ea5317a0d72dd6a.png?quality=75&type=webp&imageView&thumbnail=375x0"
+						/>
+					</div>
+				</div>
+			</div>
         </div>
         <div class="freshmanModule">
             <div>
@@ -95,19 +85,16 @@
         <div class="hotSellModule">
             <div class="module-title">类目热销榜</div>
             <div class="modules">
-                <div class="module hotModule">
-                    <div class="title">热销榜</div>
-                    <img src alt class="module-img" />
+                <div class="module hotModule" v-for="(m,index) in twoCats" :key="index">
+                    <div class="title">{{m.categoryName}}</div>
+                    <img :src="m.picUrl" class="module-img" />
                 </div>
-                <div class="module praiseModule">
-                    <div class="title">热销榜</div>
-                    <img src alt class="module-img" />
-                </div>
+                
             </div>
             <div class="partment">
-                <div class="part" v-for="index in 8" :key="index">
-                    <div class="part-name">美食酒水类</div>
-                    <img src class="pic" />
+                <div class="part" v-for="(cat,index) in hotCats" :key="index">
+                    <div class="part-name">{{cat.categoryName}}</div>
+                    <img :src="cat.picUrl" class="pic" />
                 </div>
             </div>
         </div>
@@ -123,15 +110,15 @@
                 </div>
                 <div class="more">更多&gt;</div>
             </div>
-						<div class="prod-list">
-							<div class="prod" v-for="index in 6" :key="index">
-								<img src="" alt="" class="prodPic">
-								<div class="price">
-									<span class="cur">¥987</span>
-									<del>¥1370</del>
-								</div>
-							</div>
-						</div>
+			<div class="prod-list" v-if="pageData.flashSaleModule">
+				<div class="prod" v-for="(item,index) in pageData.flashSaleModule.itemList" :key="index">
+					<img :src="item.picUrl" alt="" class="prodPic">
+					<div class="price">
+						<span class="cur">¥{{item.activityPrice}}</span>
+						<del>¥{{item.originPrice}}</del>
+					</div>
+				</div>
+			</div>
         </div>
 				<div class="freshProdModule">
 					<div class="module-title">
@@ -139,23 +126,23 @@
 							<div class="more">更多&gt;</div>
 					</div>
 					<div class="prodList">
-						<div class="prod" v-for="index in 6" :key="index">
-							<img src="" alt="" class='prodPic'>
-							<div class="desc">【UV紫外线杀菌】水质净化加湿器 5L大容量</div>
-							<div class="price">¥137</div>
-							<div class="tagWrap" v-if="index%2===0">
-								<span class="tag">满88顺丰包邮</span>
+						<div class="prod" v-for="(item,index) in newList" :key="index">
+							<img :src="item.primaryPicUrl" alt="" class='prodPic'>
+							<div class="desc">{{item.name}}</div>
+							<div class="price">¥{{item.retailPrice}}</div>
+							<div class="tagWrap" v-if="item.itemTagList[0]">
+								<span class="tag">{{item.itemTagList[0].name}}</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="otherModule">
-					<div class="part" v-for="index in 4" :key="index">
-						<div class="title">断货补单王</div>
-						<div class="desc">紧急补仓疯抢中</div>
+				<div class="otherModule" v-if="pageData.sceneLightShoppingGuideModule">
+					<div class="part" v-for="(item,index) in pageData.sceneLightShoppingGuideModule" :key="index">
+						<div class="title">{{item.styleItem.title}}</div>
+						<div class="desc">{{item.styleItem.desc}}</div>
 						<div class="prods">
-							<img src="" alt="" class="one">
-							<img src="" alt="" class="two">
+							<img :src="item.styleItem.picUrlList[0]" alt="" class="one">
+							<img :src="item.styleItem.picUrlList[1]" alt="" class="two">
 						</div>
 					</div>
 				</div>
@@ -175,7 +162,36 @@
 </template>
 
 <script>
-export default {};
+export default {
+	data(){
+		return{
+			pageData:{}
+		}
+	},
+	computed:{
+		twoCats(){
+			return this.pageData.categoryHotSellModule && this.pageData.categoryHotSellModule.categoryList && this.pageData.categoryHotSellModule.categoryList.slice(0,2);
+		},
+		hotCats(){
+			return this.pageData.categoryHotSellModule && this.pageData.categoryHotSellModule.categoryList && this.pageData.categoryHotSellModule.categoryList.slice(2);
+		},
+		newList(){
+			return this.pageData.newItemList && this.pageData.newItemList.slice(0,6)
+		}
+	},
+	methods:{
+		async getDatas(){
+			let datas = await this.$API.getRecommendData();
+			const {code,data} = datas;
+			if(code===0){
+				this.pageData = data
+			}
+		}
+	},
+	mounted(){
+		this.getDatas();
+	}
+};
 </script>
 
 <style lang="stylus">
@@ -184,6 +200,8 @@ export default {};
 	width 100%
 	.banner
 		height 370px
+		img
+			height 370px
     .servicePolicy
 			display flex
 			padding 0 20px
@@ -192,39 +210,38 @@ export default {};
 			.item
 				height 72px
 				line-height 72px
-				span
+				font-size 28px
+				.icon
+					width 32px
+					height 32px
+					margin-right 7px		
 					display inline-block
 					vertical-align middle
-					.icon
-						width 32px;
-						height 32px;
-						margin-right 10px;
-						background-size 32px;
-						&.yi
-							background-image url('http://yanxuan.nosdn.127.net/a03dd909803b9ac032eba58b7253a2f6.png')
-						&.right
-							background-image url('http://yanxuan.nosdn.127.net/2d0402ffcd52b3ec3b07422681c42a89.png')
-						&.yuan
-							background-image url('http://yanxuan.nosdn.127.net/eb61ee48e8942dbd1784c9ee75ebe955.png')
 	.categories
 		display flex
 		flex-wrap wrap
 		background-color #fff
 		.item
 			width 20%
-			height 150px
+			height 180px
 			img
+				width 120px
 				margin 0 auto
 				border-radius 7px
 			.title
 				text-align center
 				margin-top 10px
 	.promotionModule
-		.part
-			display flex
-			flex-wrap wrap
-			.item
-				width 375px
+		.floor
+			background-color #1674e3
+			padding 0 20px 20px
+			.part
+				display flex
+				justify-content space-between
+				flex-wrap wrap
+				.item
+					width 350px
+					margin-top 10px
 	.freshmanModule
 		margin 20px 0
 		padding-bottom 30px
@@ -330,9 +347,9 @@ export default {};
 				width 340px
 				height 200px
 				margin-bottom 10px
-				&.hotModule
+				&:nth-of-type(1)
 					background-color #F9F3E4
-				&.praiseModule
+				&:nth-of-type(2)
 					background-color #EBEFF6									
 				.title
 					font-size 30px
@@ -347,7 +364,6 @@ export default {};
 					height 200px
 					right 0
 					top 0
-					background-color aqua
 		.partment
 			display flex
 			flex-wrap wrap
@@ -364,7 +380,6 @@ export default {};
 					width 120px
 					height 120px
 					margin 0 auto
-					background-color aqua
 	.timeBuyModule
 		width 690px
 		background-color #fff
@@ -437,7 +452,6 @@ export default {};
 				flex-direction column
 				.prodPic
 					height 216px
-					background-color aqua
 				.desc
 					margin-top 8px
 					line-height 40px
@@ -455,7 +469,7 @@ export default {};
 					.tag
 						display inline-block
 						font-size 20px
-						padding 3px 4px
+						padding 2px 4px
 						color #DD1A21
 						border 1.2px solid #DD1A21
 						border-radius 5px
@@ -485,7 +499,6 @@ export default {};
 				img
 					width 150px
 					height 150px
-					background-color aqua
 	.footer
 		height 260px
 		background-color #414141

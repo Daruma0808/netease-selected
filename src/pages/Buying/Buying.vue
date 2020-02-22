@@ -8,44 +8,70 @@
       </div>
       <div class="content">
         <van-swipe class="my-swipe" indicator-color="#DD1A21">
-          <van-swipe-item>
+          <van-swipe-item v-for="(swiper,index) in swipers" :key="index">
             <div class="banner-page">
-              <div class="item" v-for="index in 8" :key="index">
-                <img src="" alt="" class="icon">
-                <div class="title">9.9超值</div>
-                <div class="desc">定价直降</div>
+              <div class="item" v-for="(item,i) in swiper" :key="i">
+                <img :src="item.picUrl" alt="" class="icon">
+                <div class="title">{{item.mainTitle}}</div>
+                <div class="desc">{{item.viceTitle}}</div>
               </div>
             </div>
           </van-swipe-item>
-          <van-swipe-item>2</van-swipe-item>
-          <van-swipe-item>3</van-swipe-item>
+  
         </van-swipe>
       </div>
       <div class="waterfull">
-        <vue-waterfall-easy :imgsArr="imgsArr" @scrollReachBottom="getData"></vue-waterfall-easy>
+        
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import vueWaterfallEasy from 'vue-waterfall-easy'
+//import vueWaterfallEasy from 'vue-waterfall-easy'
 import Header from '../../components/header/header'
   export default {
     components:{
-      vueWaterfallEasy,
+      //vueWaterfallEasy,
       Header
     },
     data(){
       return {
         current:0,
-        imgsArr:[],
+        navList:[],
+        topic:[],
         group:0
       }
     },
+    async mounted(){
+      this.getSwipeData()
+    },
     methods:{
+      async getSwipeData(){
+        let res = await this.$API.getSwiperNav();
+        this.navList = res.data.navList;
+      },
       onChange(index){
         this.current = index;
+      },
+      getData(){
+        console.log('获取流')
+      },
+      _chunk(target, size){
+        if(!Array.isArray(target) || size <=0){
+          return target
+        }
+        let result = []
+        while(target.length > size){
+          result.push(target.splice(0, size))
+        }
+        !!target.length && result.push(target)
+        return result
+      }
+    },
+    computed:{
+      swipers(){
+        return this._chunk(this.navList,8);
       }
     }
   }
